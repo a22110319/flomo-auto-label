@@ -10,7 +10,7 @@
           "serviceName": "flomo-quick-capture-api",
           "servicePath": "/",
           "localPath": "../../",
-          "dockerfilePath": "apps/api/Dockerfile",
+          "dockerfilePath": "Dockerfile",
           "containerPort": 8787,
           "cpu": 0.25,
           "mem": 0.5,

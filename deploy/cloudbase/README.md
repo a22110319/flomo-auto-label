@@ -1,6 +1,6 @@
 # CloudBase 部署说明
 
-本项目在生产环境中推荐使用 CloudBase 云托管运行 HTTP API，并使用 CloudBase 文档型数据库保存持久化数据。
+本项目在生产环境推荐使用 CloudBase 云托管运行 HTTP API，并使用 CloudBase 文档型数据库保存持久化数据。
 
 ## 需要启用的服务
 
@@ -49,17 +49,21 @@ CLOUDBASE_SECRET_KEY=
 CLOUDBASE_SESSION_TOKEN=
 ```
 
-## 方式 A：CloudBase 控制台部署
+## 控制台部署
 
-1. 创建云托管服务。
-2. 选择从源码构建容器。
-3. 构建上下文选择仓库根目录。
-4. Dockerfile 填写 `apps/api/Dockerfile`。
-5. 容器端口设置为 `8787`。
-6. 添加上方环境变量。
-7. 配置 HTTP 访问，并绑定支持 HTTPS 的自定义域名。
+CloudBase 自动部署界面会把“代码目录”和“Dockerfile 名称”分开填写，不要在 Dockerfile 名称里写路径。
 
-## 方式 B：CloudBase CLI 部署
+推荐填写：
+
+```text
+代码目录：/
+Dockerfile 名称：Dockerfile
+容器端口：8787
+```
+
+如果控制台要求“目标目录”而不是“代码目录”，也填写仓库根目录。不要填写 `apps/api/Dockerfile`，否则会出现“Dockerfile 包含字符 /”的错误。
+
+## CLI 部署
 
 安装并登录：
 

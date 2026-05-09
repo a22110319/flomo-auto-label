@@ -69,4 +69,14 @@ curl -X POST http://localhost:8787/api/capture \
 
 生产环境推荐使用 CloudBase 云托管 + CloudBase 文档型数据库。详细说明见 [CloudBase 部署说明](deploy/cloudbase/README.md)。
 
+CloudBase 控制台自动部署时，请填写：
+
+```text
+代码目录：/
+Dockerfile 名称：Dockerfile
+容器端口：8787
+```
+
+不要把 Dockerfile 名称写成 `apps/api/Dockerfile`。
+
 `docker-compose.yml` 仍保留用于本地 Docker 冒烟测试，会把数据持久化到 `./data`。API Token、DeepSeek Key、flomo 授权信息不要提交到仓库。
