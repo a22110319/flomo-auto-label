@@ -1,0 +1,22 @@
+{
+  "name": "flomo-quick-capture",
+  "version": "0.1.0",
+  "private": true,
+  "description": "云端优先的桌面端和 Android 端 flomo 快速采集系统。",
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:api": "npm --workspace apps/api run dev",
+    "start:api": "npm --workspace apps/api run start",
+    "test:api": "npm --workspace apps/api run test"
+  },
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "dependencies": {
+    "@cloudbase/node-sdk": "^3.18.1"
+  }
+}

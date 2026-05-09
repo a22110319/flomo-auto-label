@@ -1,0 +1,33 @@
+{
+  "version": "2.0",
+  "envId": "{{CLOUDBASE_ENV_ID}}",
+  "framework": {
+    "name": "flomo-quick-capture-api",
+    "plugins": {
+      "container": {
+        "use": "@cloudbase/framework-plugin-container",
+        "inputs": {
+          "serviceName": "flomo-quick-capture-api",
+          "servicePath": "/",
+          "localPath": "../../",
+          "dockerfilePath": "apps/api/Dockerfile",
+          "containerPort": 8787,
+          "cpu": 0.25,
+          "mem": 0.5,
+          "minNum": 0,
+          "maxNum": 2,
+          "envVariables": {
+            "PORT": "8787",
+            "STORAGE_DRIVER": "cloudbase",
+            "LLM_PROVIDER": "deepseek",
+            "DEEPSEEK_MODEL": "deepseek-v4-flash",
+            "DEEPSEEK_BASE_URL": "https://api.deepseek.com",
+            "FLOMO_MCP_ENDPOINT": "https://flomoapp.com/mcp",
+            "FLOMO_MCP_MEMO_TOOL": "memo_create",
+            "FLOMO_MCP_TAG_TOOL": "tag_tree"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+services:
+  backend-api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    environment:
+      PORT: 8787
+      API_TOKEN: ${API_TOKEN:?set API_TOKEN in .env}
+      DATA_DIR: /app/data
+      STORAGE_DRIVER: ${STORAGE_DRIVER:-json}
+      CLOUDBASE_ENV_ID: ${CLOUDBASE_ENV_ID:-}
+      CLOUDBASE_SECRET_ID: ${CLOUDBASE_SECRET_ID:-}
+      CLOUDBASE_SECRET_KEY: ${CLOUDBASE_SECRET_KEY:-}
+      CLOUDBASE_SESSION_TOKEN: ${CLOUDBASE_SESSION_TOKEN:-}
+      LLM_PROVIDER: ${LLM_PROVIDER:-local}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      DEEPSEEK_MODEL: ${DEEPSEEK_MODEL:-deepseek-v4-flash}
+      DEEPSEEK_BASE_URL: ${DEEPSEEK_BASE_URL:-https://api.deepseek.com}
+      FLOMO_MCP_ENDPOINT: ${FLOMO_MCP_ENDPOINT:-}
+      FLOMO_MCP_AUTHORIZATION: ${FLOMO_MCP_AUTHORIZATION:-}
+      FLOMO_MCP_TOKEN: ${FLOMO_MCP_TOKEN:-}
+      FLOMO_MCP_MEMO_TOOL: ${FLOMO_MCP_MEMO_TOOL:-memo_create}
+      FLOMO_MCP_TAG_TOOL: ${FLOMO_MCP_TAG_TOOL:-tag_tree}
+    ports:
+      - "8787:8787"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
