@@ -1,6 +1,22 @@
-# CloudBase 部署说明
+# CloudBase 可选部署说明
 
-本项目在生产环境推荐使用 CloudBase 云托管运行 HTTP API，并使用 CloudBase 文档型数据库保存持久化数据。
+CloudBase 不是本项目 v0.1 的默认路线。默认情况下，桌面端和 Android 端可以在本地完成 AI 调用、标签选择和 flomo MCP 写入，最终由 flomo 承担数据同步。
+
+只有当你需要隐藏移动端密钥、统一远程规则、跨端失败草稿同步或远程管理时，再考虑启用 CloudBase。
+
+## 可选架构
+
+```text
+桌面端 / Android 端
+  ↓
+CloudBase 云托管 API
+  ↓
+DeepSeek / OpenAI
+  ↓
+flomo MCP
+  ↓
+flomo
+```
 
 ## 需要启用的服务
 
@@ -11,7 +27,7 @@
 
 ## 数据库集合
 
-首次生产运行前，请在 CloudBase 控制台创建以下集合：
+如果启用 CloudBase，请在控制台创建以下集合：
 
 - `tag_cache`
 - `capture_records`
@@ -25,7 +41,7 @@
 
 把 `deploy/cloudbase/.env.prod.example` 里的内容复制到 CloudBase 云托管服务的环境变量配置中。
 
-生产环境必填项：
+关键配置：
 
 ```env
 API_TOKEN=替换为足够长的私有访问令牌
@@ -98,5 +114,5 @@ curl -X POST https://<base-url>/api/tags/refresh \
 curl -X POST https://<base-url>/api/capture \
   -H "Authorization: Bearer <api-token>" \
   -H "Content-Type: application/json" \
-  -d '{"raw_text":"CloudBase 部署冒烟测试","source":"api","client_id":"cloudbase-smoke-test","mode":"auto"}'
+  -d '{"raw_text":"CloudBase 可选部署冒烟测试","source":"api","client_id":"cloudbase-smoke-test","mode":"auto"}'
 ```

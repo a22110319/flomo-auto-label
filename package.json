@@ -1,8 +1,8 @@
 {
-  "name": "flomo-quick-capture",
+  "name": "flomo-local-capture",
   "version": "0.1.0",
   "private": true,
-  "description": "云端优先的桌面端和 Android 端 flomo 快速采集系统。",
+  "description": "本地优先的桌面端和 Android 端 flomo 快速采集器。",
   "type": "module",
   "workspaces": [
     "apps/*",
@@ -10,7 +10,9 @@
   ],
   "scripts": {
     "dev:api": "npm --workspace apps/api run dev",
+    "dev:engine": "npm --workspace apps/api run dev",
     "start:api": "npm --workspace apps/api run start",
+    "start:engine": "npm --workspace apps/api run start",
     "test:api": "npm --workspace apps/api run test"
   },
   "engines": {

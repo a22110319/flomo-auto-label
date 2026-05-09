@@ -1,3 +1,4 @@
+import { buildCaptureJsonSchema, buildCaptureSystemPrompt } from "../../../packages/shared/src/prompt.ts";
 import type { AiOrganizeResult } from "./types.ts";
 
 export interface AiService {
@@ -22,7 +23,7 @@ export class LocalAiService implements AiService {
       clean_text: formatText(compact),
       tags,
       confidence: tags.length > 1 ? 0.74 : 0.52,
-      reason: "本地启发式兜底；如需云端 AI，请配置 LLM_PROVIDER=deepseek 或 LLM_PROVIDER=openai"
+      reason: "本地启发式兜底；如需 AI，请配置 LLM_PROVIDER=deepseek 或 LLM_PROVIDER=openai"
     };
   }
 }
@@ -45,14 +46,14 @@ export class OpenAiService implements AiService {
       },
       body: JSON.stringify({
         model: this.model,
-        instructions: buildSystemPrompt(),
+        instructions: buildCaptureSystemPrompt(),
         input: JSON.stringify({ raw_text: rawText, tag_tree: tagTree }),
         text: {
           format: {
             type: "json_schema",
             name: "flomo_capture_result",
             strict: true,
-            schema: buildJsonSchema(tagTree)
+            schema: buildCaptureJsonSchema(tagTree)
           }
         }
       })
@@ -97,7 +98,7 @@ export class DeepSeekService implements AiService {
         messages: [
           {
             role: "system",
-            content: buildSystemPrompt()
+            content: buildCaptureSystemPrompt()
           },
           {
             role: "user",
@@ -135,40 +136,6 @@ export function createAiService(options: {
     return new DeepSeekService(options.deepseekApiKey, options.deepseekModel, options.deepseekBaseUrl);
   }
   return new LocalAiService();
-}
-
-function buildSystemPrompt(): string {
-  return [
-    "你是个人 flomo 快速采集器的 AI 整理与标签选择模块。",
-    "请整理用户原始笔记，但不要改变原意，不要拔高，不要编造背景。",
-    "可以轻微补全语句、拆成列表、优化段落清晰度。",
-    "只能从传入的 tag_tree 中选择标签，绝不能创建新标签。",
-    "每条笔记至少返回 1 个标签，最多返回 4 个标签。",
-    "优先选择 1 个 #类型/... 标签；如果领域明确，再选择 1 到 3 个 #领域/... 标签。",
-    "如果不确定，使用 #类型/备忘。",
-    "正文只允许使用普通段落、无序列表、有序列表、加粗和空行。",
-    "不要使用标题、表格、代码块、引用块、图片或复杂 Markdown 链接。",
-    "只返回合法 JSON，字段必须是 clean_text、tags、confidence、reason。"
-  ].join("\n");
-}
-
-function buildJsonSchema(tagTree: string[]): Record<string, unknown> {
-  return {
-    type: "object",
-    additionalProperties: false,
-    required: ["clean_text", "tags", "confidence", "reason"],
-    properties: {
-      clean_text: { type: "string" },
-      tags: {
-        type: "array",
-        minItems: 1,
-        maxItems: 4,
-        items: { type: "string", enum: tagTree }
-      },
-      confidence: { type: "number", minimum: 0, maximum: 1 },
-      reason: { type: "string" }
-    }
-  };
 }
 
 function parseAiJson(text: string): AiOrganizeResult {
